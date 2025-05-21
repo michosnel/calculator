@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)https://8080-4645e591-9239-4329-a0f6-76cb3f81f756.h1068.daytona.work/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <title>Waiting for process...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <script>
+    function getPortFromUrl() {
+      const hostname = window.location.hostname;
+
+      // Extract the PORT from the hostname
+      const portMatch = hostname.match(/^(\d+)-/);
+
+      if (portMatch && portMatch[1]) {
+        return portMatch[1];
+      }
+
+      // Return a default or empty string if no match
+      return "unknown";
+    }
+
+    function checkPort() {
+      fetch(window.location.href)
+        .then(response => {
+          if (response.status === 200) {
+            window.location.reload();
+          } else {
+            // Keep checking if not 200
+            setTimeout(checkPort, 2000);
+          }
+        })
+        .catch(() => {
+          // If error, keep checking
+          setTimeout(checkPort, 2000);
+        });
+    }
+
+    // Start checking after page loads
+    window.onload = function() {
+      // Get the port number to display in the UI
+      const port = getPortFromUrl();
+
+      // Update the port text
+      document.getElementById('portNumber').textContent = port;
+
+      // Start checking
+      checkPort();
+    };
+  </script>
+<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="use-credentials"><link rel="preconnect" href="https://fonts.gstatic.com/"><link rel="stylesheet" href="./css2"><style>undefined</style></head>
+<body>
+  <div class="container">
+    <div class="spinner"></div>
+    <h2>Waiting for process on port <span id="portNumber">8080</span>...</h2>
+    <p>The page will automatically refresh when the process is ready.</p>
+  </div>
+
+
+</body></html>
